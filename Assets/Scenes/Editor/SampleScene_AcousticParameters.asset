@@ -35,4 +35,151 @@ MonoBehaviour:
   AcousticsDataFolder: Assets\AcousticsData
   DataFileBaseName: Acoustics_SampleScene
   ActiveJobID: 
-  MaterialsListElements: []
+  MaterialsListElements:
+  - m_name: asphalt
+    m_absorptivity: 0.1
+    m_materialCode: 25
+  - m_name: brick unglazed
+    m_absorptivity: 0.1
+    m_materialCode: 3
+  - m_name: carpet heavy
+    m_absorptivity: 0.1
+    m_materialCode: 29
+  - m_name: cloth
+    m_absorptivity: 0.1
+    m_materialCode: 44
+  - m_name: cloth2
+    m_absorptivity: 0.1
+    m_materialCode: 44
+  - m_name: concrete
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete painted
+    m_absorptivity: 0.1
+    m_materialCode: 26
+  - m_name: concrete painted2
+    m_absorptivity: 0.1
+    m_materialCode: 26
+  - m_name: concrete painted3
+    m_absorptivity: 0.1
+    m_materialCode: 26
+  - m_name: concrete rough
+    m_absorptivity: 0.1
+    m_materialCode: 6
+  - m_name: concrete rough2
+    m_absorptivity: 0.1
+    m_materialCode: 6
+  - m_name: concrete2
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete3
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete4
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete5
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete6
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete7
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete8
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: concrete9
+    m_absorptivity: 0.1
+    m_materialCode: 37
+  - m_name: glass
+    m_absorptivity: 0.1
+    m_materialCode: 38
+  - m_name: glass window
+    m_absorptivity: 0.1
+    m_materialCode: 9
+  - m_name: glass window2
+    m_absorptivity: 0.1
+    m_materialCode: 9
+  - m_name: glass2
+    m_absorptivity: 0.1
+    m_materialCode: 38
+  - m_name: metal
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal10
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal11
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal12
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal13
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal14
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal2
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal3
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal4
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal5
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal6
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal7
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: metal8
+    m_absorptivity: 0.1
+    m_materialCode: 49
+  - m_name: plastic
+    m_absorptivity: 0.1
+    m_materialCode: 39
+  - m_name: plastic2
+    m_absorptivity: 0.1
+    m_materialCode: 39
+  - m_name: plastic3
+    m_absorptivity: 0.1
+    m_materialCode: 39
+  - m_name: plastic4
+    m_absorptivity: 0.1
+    m_materialCode: 39
+  - m_name: porcelain
+    m_absorptivity: 0.1
+    m_materialCode: 60
+  - m_name: porcelain2
+    m_absorptivity: 0.1
+    m_materialCode: 60
+  - m_name: rubber
+    m_absorptivity: 0.1
+    m_materialCode: 23
+  - m_name: rubber2
+    m_absorptivity: 0.1
+    m_materialCode: 23
+  - m_name: rubber3
+    m_absorptivity: 0.1
+    m_materialCode: 23
+  - m_name: wood
+    m_absorptivity: 0.1
+    m_materialCode: 27
+  - m_name: wood2
+    m_absorptivity: 0.1
+    m_materialCode: 27
+  - m_name: wood3
+    m_absorptivity: 0.1
+    m_materialCode: 27
+  - m_name: wood4
+    m_absorptivity: 0.1
+    m_materialCode: 27
