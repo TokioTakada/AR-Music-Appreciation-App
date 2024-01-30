@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
 using System.Collections;
@@ -46,9 +47,80 @@ public class GraphDBQuery : MonoBehaviour
     
     //public List<AudioClip> clips;
 
+    /*[SerializeField]
+    private GameObject dropdown;*/
+    [SerializeField]
+    private List<Toggle> toggles;
+
+    private Transform myTransform;
+    private List<Vector3> instrumentPositions = new List<Vector3>();
+
     void Start()
     {
+        myTransform = this.transform;
         StartCoroutine(SendSPARQLQuery());
+    }
+
+    /*public void OnSelected()
+    {
+        Dropdown ddtmp;
+
+        //DropdownコンポーネントをGet
+        ddtmp = dropdown.GetComponent<Dropdown>();
+
+        //Dropdownコンポーネントから選択されている文字を取得
+        string selectedvalue = ddtmp.options[ddtmp.value].text;
+
+        //ログに出力
+        Debug.Log(selectedvalue);
+    }*/
+
+    public void OnClickToggle()
+    {
+        for (int i = 0; i < toggles.Count; i++)
+        {
+            if (toggles[i].isOn)
+            {
+                switch (i)
+                {
+                    case 0:
+                        StartCoroutine(SendSPARQLQuery());
+                        break;
+                    case 1:
+                        instrumentPositions.Add (new Vector3 (-2.505f, 0.753f, -6.032f));
+                        instrumentPositions.Add (new Vector3 (0.186f, 0.670f, -3.733f));
+                        instrumentPositions.Add (new Vector3 (-0.444f, 0.902f, -5.437f));
+                        break;
+                    case 2:
+                        instrumentPositions.Add (new Vector3 (0.372f, 1.042f, -6.826f));
+                        instrumentPositions.Add (new Vector3 (-2.570f, 0.670f, -2.154f));
+                        instrumentPositions.Add (new Vector3 (6.077f, 0.678f, -6.653f));
+                        break;
+                    case 3:
+                        instrumentPositions.Add (new Vector3 (3.588f, 0.688f, -1.238f));
+                        instrumentPositions.Add (new Vector3 (-2.993f, 0.669f, -1.941f));
+                        instrumentPositions.Add (new Vector3 (-3.179f, 0.900f, -5.160f));
+                        break;
+                    case 4:
+                        instrumentPositions.Add (new Vector3 (-5.523f, 0.929f, -5.021f));
+                        instrumentPositions.Add (new Vector3 (-1.894f, 0.611f, -6.541f));
+                        instrumentPositions.Add (new Vector3 (-1.685f, 0.611f, -1.043f));
+                        break;
+                }
+
+                if (i != 0)
+                {
+                    for (int j = 0; j < myTransform.childCount; j++)
+                    {
+                        Transform childTransform = myTransform.GetChild(j);
+                        childTransform.localPosition = instrumentPositions[j];
+                    }
+                    instrumentPositions.Clear();
+                }
+
+                break;
+            }
+        }
     }
 
     IEnumerator SendSPARQLQuery()
@@ -80,7 +152,7 @@ public class GraphDBQuery : MonoBehaviour
             if (www.result == UnityWebRequest.Result.Success)
             {
                 string result = www.downloadHandler.text;
-                Debug.Log("SPARQL Query Result: " + result);
+                //Debug.Log("SPARQL Query Result: " + result);
 
                 // JSONデータをクラスにデシリアライズ
                 SPARQLQueryResult queryResult = JsonUtility.FromJson<SPARQLQueryResult>(result);
@@ -127,8 +199,6 @@ public class GraphDBQuery : MonoBehaviour
                     audio.clip = clips[(int)Char.GetNumericValue(subjectLabel[subjectLabel.Length - 1])-1];
                     audio.Play();
                 }*/
-
-                Transform myTransform = this.transform;
 
                 for (int i = 0; i < myTransform.childCount; i++)
                 {
