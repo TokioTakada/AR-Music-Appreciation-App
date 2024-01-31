@@ -55,8 +55,8 @@ namespace ImmersalRESTLocalizer
 
         public void StartGetIntrinsics()
         {
-            startingPanel.SetActive(false);
             GetIntrinsics();
+            startingPanel.SetActive(false);
         }
 
         void Update() {
