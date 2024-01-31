@@ -30,24 +30,40 @@ namespace ImmersalRESTLocalizer
         [SerializeField]
         private float p_LerpTime = 1.0f;
 
+        [SerializeField]
+        private GameObject successPanel;
+        [SerializeField]
+        private GameObject failurePanel;
+        [SerializeField]
+        private GameObject startingPanel;
+
         // Start is called before the first frame update
         void Start()
         {
             _immersalRestClient = new ImmersalRestClient(configuration);
             //GetIntrinsicsAsync().Forget();
+            successPanel.SetActive(false);
+            failurePanel.SetActive(false);
+            Invoke(nameof(StartGetIntrinsics), 1.0f);
         }
 
-        /*public void GetIntrinsics()
+        public void GetIntrinsics()
         {
             GetIntrinsicsAsync().Forget();
-        }*/
+            currentTime = 0f;
+        }
+
+        public void StartGetIntrinsics()
+        {
+            startingPanel.SetActive(false);
+            GetIntrinsics();
+        }
 
         void Update() {
             currentTime += Time.deltaTime;
 
             if(currentTime > span){
-                GetIntrinsicsAsync().Forget();
-                currentTime = 0f;
+                GetIntrinsics();
             }
         }
 
@@ -94,6 +110,8 @@ namespace ImmersalRESTLocalizer
             if (p_TargetPosition != Vector3.zero)
             {
                 Debug.Log("Success!");
+                failurePanel.SetActive(false);
+                successPanel.SetActive(true);
                 Debug.Log("coordinate: " + p_TargetPosition.ToString());
                 Vector3 immersalEulerAngles = immersalCameraMatrix.rotation.eulerAngles;
                 p_TargetRotation.eulerAngles = new Vector3(180-immersalEulerAngles.x, -immersalEulerAngles.y, 90-immersalEulerAngles.z);
@@ -105,6 +123,8 @@ namespace ImmersalRESTLocalizer
             else
             {
                 Debug.Log("Failure...");
+                successPanel.SetActive(false);
+                failurePanel.SetActive(true);
             }
         }
 
