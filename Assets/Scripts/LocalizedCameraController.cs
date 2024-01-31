@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using ImmersalRESTLocalizer.Types;
 using Cysharp.Threading.Tasks;
 using UnityEngine.XR.ARFoundation;
@@ -20,6 +21,7 @@ namespace ImmersalRESTLocalizer
         //[SerializeField] private Transform arSpace;
 
         public float span = 5f;
+        private float defaultSpan;
         private float currentTime = 0f;
         private Vector3 p_TargetPosition;
         private Quaternion p_TargetRotation;
@@ -36,6 +38,8 @@ namespace ImmersalRESTLocalizer
         private GameObject failurePanel;
         [SerializeField]
         private GameObject startingPanel;
+        [SerializeField]
+        private Toggle slowToggle;
 
         // Start is called before the first frame update
         void Start()
@@ -64,6 +68,19 @@ namespace ImmersalRESTLocalizer
 
             if(currentTime > span){
                 GetIntrinsics();
+            }
+        }
+
+        public void OnClickToggle()
+        {
+            if (slowToggle.isOn)
+            {
+                defaultSpan = span;
+                span = 300f;
+            }
+            else
+            {
+                span = defaultSpan;
             }
         }
 
