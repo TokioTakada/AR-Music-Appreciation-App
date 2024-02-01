@@ -131,12 +131,15 @@ namespace ImmersalRESTLocalizer
                 Debug.Log("Success!");
                 failurePanel.SetActive(false);
                 successPanel.SetActive(true);
-                p_TargetPosition = immersalPosition - cameraManager.transform.localPosition;
-                Debug.Log("coordinate: " + p_TargetPosition.ToString());
+                //p_TargetPosition = immersalPosition - cameraManager.transform.localPosition;
+                //Debug.Log("coordinate: " + p_TargetPosition.ToString());
                 Vector3 immersalEulerAngles = immersalCameraMatrix.rotation.eulerAngles;
                 Vector3 cameraEulerAngles = cameraManager.transform.localEulerAngles;
                 immersalRotation.eulerAngles = new Vector3(180 - immersalEulerAngles.x, - immersalEulerAngles.y, 90 - immersalEulerAngles.z);
                 p_TargetRotation = immersalRotation * Quaternion.Inverse(cameraManager.transform.localRotation);
+                Vector3 rotatedOffset = p_TargetRotation * cameraManager.transform.localPosition;
+                p_TargetPosition = immersalPosition - rotatedOffset;
+                Debug.Log("coordinate: " + p_TargetPosition.ToString());
                 Debug.Log("rotation: " + p_TargetRotation.eulerAngles.ToString());
                 /*cameraManager.transform.localPosition = Vector3.zero;
                 cameraManager.transform.localEulerAngles = Vector3.zero;*/
