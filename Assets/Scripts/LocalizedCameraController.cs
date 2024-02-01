@@ -23,6 +23,8 @@ namespace ImmersalRESTLocalizer
         public float span = 5f;
         private float defaultSpan;
         private float currentTime = 0f;
+        private Vector3 immersalPosition;
+        private Quaternion immersalRotation;
         private Vector3 p_TargetPosition;
         private Quaternion p_TargetRotation;
         private Vector3 p_StartPosition;
@@ -123,19 +125,26 @@ namespace ImmersalRESTLocalizer
             Debug.Log("AR Camera coordinate: " + cameraManager.transform.position.ToString());
             Debug.Log("AR Camera rotation: " + cameraManager.transform.rotation.eulerAngles.ToString());*/
             //Debug.Log(arSpace.position);
-            p_TargetPosition = new Vector3(immersalResponse.px, immersalResponse.py, -immersalResponse.pz);
-            if (p_TargetPosition != Vector3.zero)
+            immersalPosition = new Vector3(immersalResponse.px, immersalResponse.py, -immersalResponse.pz);
+            if (immersalPosition != Vector3.zero)
             {
                 Debug.Log("Success!");
                 failurePanel.SetActive(false);
                 successPanel.SetActive(true);
+                p_TargetPosition = immersalPosition - cameraManager.transform.localPosition;
                 Debug.Log("coordinate: " + p_TargetPosition.ToString());
                 Vector3 immersalEulerAngles = immersalCameraMatrix.rotation.eulerAngles;
-                p_TargetRotation.eulerAngles = new Vector3(180-immersalEulerAngles.x, -immersalEulerAngles.y, 90-immersalEulerAngles.z);
+                Vector3 cameraEulerAngles = cameraManager.transform.localEulerAngles;
+                immersalRotation.eulerAngles = new Vector3(180 - immersalEulerAngles.x, - immersalEulerAngles.y, 90 - immersalEulerAngles.z);
+                p_TargetRotation = immersalRotation * Quaternion.Inverse(cameraManager.transform.localRotation);
                 Debug.Log("rotation: " + p_TargetRotation.eulerAngles.ToString());
-                cameraManager.transform.localPosition = Vector3.zero;
-                cameraManager.transform.localEulerAngles = Vector3.zero;
-                ExecuteMove();
+                /*cameraManager.transform.localPosition = Vector3.zero;
+                cameraManager.transform.localEulerAngles = Vector3.zero;*/
+                //ExecuteMove();
+                sessionOrigin.transform.position = p_TargetPosition;
+                sessionOrigin.transform.rotation = p_TargetRotation;
+                Debug.Log("AR Camera coordinate: " + cameraManager.transform.position.ToString());
+                Debug.Log("AR Camera rotation: " + cameraManager.transform.rotation.eulerAngles.ToString());
             }
             else
             {

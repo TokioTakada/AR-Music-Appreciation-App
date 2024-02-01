@@ -36,10 +36,13 @@ public class HideUnnecessaryObjects : MonoBehaviour
             MeshRenderer grandchildMeshRenderer = grandchildTransform.GetComponent<MeshRenderer>();
             grandchildMeshRenderer.enabled = false;
         }*/
-        foreach (MeshRenderer child in pointCloud.GetComponentsInChildren<MeshRenderer>())
+        /*foreach (MeshRenderer child in pointCloud.GetComponentsInChildren<MeshRenderer>())
         {
             child.enabled = false;
-        }
+        }*/
+
+        MeshRenderer parentMeshRenderer = pointCloud.GetComponent<MeshRenderer>();
+        parentMeshRenderer.enabled = false;
     }
 
     public void OnClickToggle()
