@@ -93,6 +93,10 @@ namespace ImmersalRESTLocalizer
 
             //var cameraMatrix = cameraManager.transform.localToWorldMatrix;
 
+            //StopWatchを定義
+            /*var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();*/ //計測開始
+            
             if (!cameraManager.TryAcquireLatestCpuImage(out var image))
             {
                 Debug.Log("cannot acquire cpu image");
@@ -108,7 +112,13 @@ namespace ImmersalRESTLocalizer
                 return;
             }
 
+            var sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
             var resText = await _immersalRestClient.SendRequestAsync(intrinsics, cameraTexture);
+
+            Debug.Log("Time: " + sw.Elapsed); //経過時間
+            sw.Stop();
 
             var immersalResponse = JsonUtility.FromJson<ImmersalResponseParams>(resText);
 
@@ -139,13 +149,17 @@ namespace ImmersalRESTLocalizer
                 p_TargetRotation = immersalRotation * Quaternion.Inverse(cameraManager.transform.localRotation);
                 Vector3 rotatedOffset = p_TargetRotation * cameraManager.transform.localPosition;
                 p_TargetPosition = immersalPosition - rotatedOffset;
-                Debug.Log("coordinate: " + p_TargetPosition.ToString());
-                Debug.Log("rotation: " + p_TargetRotation.eulerAngles.ToString());
+                /*Debug.Log("coordinate: " + p_TargetPosition.ToString());
+                Debug.Log("rotation: " + p_TargetRotation.eulerAngles.ToString());*/
                 /*cameraManager.transform.localPosition = Vector3.zero;
                 cameraManager.transform.localEulerAngles = Vector3.zero;*/
                 //ExecuteMove();
                 sessionOrigin.transform.position = p_TargetPosition;
                 sessionOrigin.transform.rotation = p_TargetRotation;
+                /*Debug.Log(sw.Elapsed); //経過時間
+                sw.Stop();*/
+                Debug.Log("Target coordinate: " + immersalPosition.ToString());
+                Debug.Log("Target rotation: " + immersalRotation.eulerAngles.ToString());
                 Debug.Log("AR Camera coordinate: " + cameraManager.transform.position.ToString());
                 Debug.Log("AR Camera rotation: " + cameraManager.transform.rotation.eulerAngles.ToString());
             }
@@ -154,6 +168,8 @@ namespace ImmersalRESTLocalizer
                 Debug.Log("Failure...");
                 successPanel.SetActive(false);
                 failurePanel.SetActive(true);
+                /*Debug.Log(sw.Elapsed); //経過時間
+                sw.Stop();*/
             }
         }
 
