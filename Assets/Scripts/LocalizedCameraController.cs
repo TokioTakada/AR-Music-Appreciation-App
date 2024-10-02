@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using ImmersalRESTLocalizer.Types;
 using Cysharp.Threading.Tasks;
 using UnityEngine.XR.ARFoundation;
@@ -14,7 +15,9 @@ namespace ImmersalRESTLocalizer
     {
         [SerializeField] private ARCameraManager cameraManager;
         [SerializeField] private ARSessionOrigin sessionOrigin;
-        [SerializeField] private ImmersalRESTConfiguration configuration;
+        [SerializeField] private ImmersalRESTConfiguration hilobbyConfiguration;
+        [SerializeField] private ImmersalRESTConfiguration secondLobbyConfiguration;
+        [SerializeField] private ImmersalRESTConfiguration myRoomConfiguration;
 
         private ImmersalRestClient _immersalRestClient;
 
@@ -41,12 +44,18 @@ namespace ImmersalRESTLocalizer
         [SerializeField]
         private GameObject startingPanel;
         [SerializeField]
+        private TMP_Dropdown dropdown;
+        [SerializeField]
+        private TextMeshProUGUI stampText;
+        [SerializeField]
+        private TextMeshProUGUI delayText;
+        [SerializeField]
         private Toggle slowToggle;
 
         // Start is called before the first frame update
         void Start()
         {
-            _immersalRestClient = new ImmersalRestClient(configuration);
+            _immersalRestClient = new ImmersalRestClient(hilobbyConfiguration);
             //GetIntrinsicsAsync().Forget();
             successPanel.SetActive(false);
             failurePanel.SetActive(false);
@@ -70,6 +79,22 @@ namespace ImmersalRESTLocalizer
 
             if(currentTime > span){
                 GetIntrinsics();
+            }
+        }
+
+        public void ChangeMap()
+        {
+            if (dropdown.value == 0)
+            {
+                _immersalRestClient = new ImmersalRestClient(hilobbyConfiguration);
+            }
+            if (dropdown.value == 1)
+            {
+                _immersalRestClient = new ImmersalRestClient(secondLobbyConfiguration);
+            }
+            if (dropdown.value == 2)
+            {
+                _immersalRestClient = new ImmersalRestClient(myRoomConfiguration);
             }
         }
 
@@ -114,11 +139,13 @@ namespace ImmersalRESTLocalizer
 
             var sw = new System.Diagnostics.Stopwatch();
             sw.Start();
-
             var resText = await _immersalRestClient.SendRequestAsync(intrinsics, cameraTexture);
-
-            Debug.Log("Time: " + sw.Elapsed); //経過時間
             sw.Stop();
+            DateTime timeStamp = DateTime.Now - sw.Elapsed;
+            stampText.text = timeStamp.ToString();
+            delayText.text = sw.Elapsed.ToString();
+            Debug.Log("Stamp: " + timeStamp);
+            Debug.Log("Delay: " + sw.Elapsed); //経過時間
 
             var immersalResponse = JsonUtility.FromJson<ImmersalResponseParams>(resText);
 
@@ -138,7 +165,7 @@ namespace ImmersalRESTLocalizer
             immersalPosition = new Vector3(immersalResponse.px, immersalResponse.py, -immersalResponse.pz);
             if (immersalPosition != Vector3.zero)
             {
-                Debug.Log("Success!");
+                Debug.Log("Success");
                 failurePanel.SetActive(false);
                 successPanel.SetActive(true);
                 //p_TargetPosition = immersalPosition - cameraManager.transform.localPosition;
@@ -165,7 +192,7 @@ namespace ImmersalRESTLocalizer
             }
             else
             {
-                Debug.Log("Failure...");
+                Debug.Log("Failure");
                 successPanel.SetActive(false);
                 failurePanel.SetActive(true);
                 /*Debug.Log(sw.Elapsed); //経過時間

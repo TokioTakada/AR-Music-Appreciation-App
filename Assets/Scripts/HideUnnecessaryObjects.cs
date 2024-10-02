@@ -41,8 +41,8 @@ public class HideUnnecessaryObjects : MonoBehaviour
             child.enabled = false;
         }
 
-        /*MeshRenderer parentMeshRenderer = pointCloud.GetComponent<MeshRenderer>();
-        parentMeshRenderer.enabled = false;*/
+        MeshRenderer parentMeshRenderer = pointCloud.GetComponent<MeshRenderer>();
+        parentMeshRenderer.enabled = false;
     }
 
     public void OnClickToggle()

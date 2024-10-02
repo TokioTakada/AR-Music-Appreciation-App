@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2936215dd1ffab449886677fa20fad05, type: 3}
+  m_Name: MyRoomConfig
+  m_EditorClassIdentifier: 
+  token: bfacfc81f70142d1982c26d68c73921f3e9e4010369f48742d03777698c7caf2
+  MapIds:
+  - id: 93266

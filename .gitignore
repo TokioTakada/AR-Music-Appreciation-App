@@ -70,3 +70,5 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+/Assets/StreamingAssets/.PLATEAU/13104_shinjuku-ku_city_2023_citygml_1_op/udx/bldg/53394535_bldg_6697_op.gml
