@@ -13,6 +13,8 @@ public class ModeChanger : MonoBehaviour
     [SerializeField]
     private GameObject delayPanel;
     [SerializeField]
+    private GameObject feedbackPanel;
+    [SerializeField]
     private GameObject offset;
     [SerializeField]
     private Toggle showToggle;
@@ -22,13 +24,18 @@ public class ModeChanger : MonoBehaviour
     void Start()
     {
         delayPanel.SetActive(false);
+        feedbackPanel.SetActive(false);
     }
     
     public void ChangeMode()
     {
+        // すべてのパネルを非表示にする
+        playbackPanel.SetActive(false);
+        delayPanel.SetActive(false);
+        feedbackPanel.SetActive(false);
+
         if (dropdown.value == 0)
         {
-            delayPanel.SetActive(false);
             playbackPanel.SetActive(true);
             if (showToggle.isOn)
             {
@@ -40,15 +47,15 @@ public class ModeChanger : MonoBehaviour
             if (playToggle.isOn)
             {
                 AudioSource[] audioSources = offset.GetComponentsInChildren<AudioSource>();
-
                 foreach (AudioSource audioSource in audioSources)
                 {
                     audioSource.Play();
                 }
             }
         }
-        if (dropdown.value == 1)
+        else if (dropdown.value == 1 || dropdown.value == 2)
         {
+            // delay モードと feedback モードで共通の処理
             if (showToggle.isOn)
             {
                 foreach (MeshRenderer child in offset.GetComponentsInChildren<MeshRenderer>())
@@ -59,14 +66,21 @@ public class ModeChanger : MonoBehaviour
             if (playToggle.isOn)
             {
                 AudioSource[] audioSources = offset.GetComponentsInChildren<AudioSource>();
-
                 foreach (AudioSource audioSource in audioSources)
                 {
                     audioSource.Stop();
                 }
             }
-            playbackPanel.SetActive(false);
-            delayPanel.SetActive(true);
+
+            // パネルの表示切り替え
+            if (dropdown.value == 1)
+            {
+                delayPanel.SetActive(true);
+            }
+            else
+            {
+                feedbackPanel.SetActive(true);
+            }
         }
     }
 }
