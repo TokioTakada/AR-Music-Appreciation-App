@@ -34,16 +34,25 @@ public class ModeChanger : MonoBehaviour
         delayPanel.SetActive(false);
         feedbackPanel.SetActive(false);
 
-        if (dropdown.value == 0)
+        if (dropdown.value == 0 || dropdown.value == 2)
         {
-            playbackPanel.SetActive(true);
-            if (showToggle.isOn)
+            // playback モードまたは feedback モードのとき
+            if (dropdown.value == 0)
             {
-                foreach (MeshRenderer child in offset.GetComponentsInChildren<MeshRenderer>())
+                playbackPanel.SetActive(true);
+                if (showToggle.isOn)
                 {
-                    child.enabled = true;
+                    foreach (MeshRenderer child in offset.GetComponentsInChildren<MeshRenderer>())
+                    {
+                        child.enabled = true;
+                    }
                 }
             }
+            else
+            {
+                feedbackPanel.SetActive(true);
+            }
+
             if (playToggle.isOn)
             {
                 AudioSource[] audioSources = offset.GetComponentsInChildren<AudioSource>();
@@ -53,9 +62,9 @@ public class ModeChanger : MonoBehaviour
                 }
             }
         }
-        else if (dropdown.value == 1 || dropdown.value == 2)
+        else if (dropdown.value == 1)
         {
-            // delay モードと feedback モードで共通の処理
+            // delay モードの処理
             if (showToggle.isOn)
             {
                 foreach (MeshRenderer child in offset.GetComponentsInChildren<MeshRenderer>())
@@ -71,16 +80,7 @@ public class ModeChanger : MonoBehaviour
                     audioSource.Stop();
                 }
             }
-
-            // パネルの表示切り替え
-            if (dropdown.value == 1)
-            {
-                delayPanel.SetActive(true);
-            }
-            else
-            {
-                feedbackPanel.SetActive(true);
-            }
+            delayPanel.SetActive(true);
         }
     }
 }

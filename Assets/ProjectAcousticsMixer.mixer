@@ -37,11 +37,11 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: 6650fe0e6b18cbe4f95e2be4a5340530
-    name: MyExposedParam
-  - guid: e1c7f10f74c102f44b7b030181fc11d4
-    name: MyExposedParam 1
+    name: Wetness Adjust
   - guid: 109f515ee381eb3478c13f798cc5bcdf
-    name: MyExposedParam 2
+    name: Spatializer
+  - guid: e1c7f10f74c102f44b7b030181fc11d4
+    name: RT60 Scale
   m_AudioMixerGroupViews:
   - guids:
     - b217105dd5afef74b92907877a4fe17d
