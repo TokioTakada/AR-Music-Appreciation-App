@@ -32,6 +32,21 @@
       "dependencies": {},
       "hash": "f6edceab77e3c10c4c006732415242d441f79401"
     },
+    "com.magicleap.unitysdk": {
+      "version": "file:C:/Users/6393126650/MagicLeap/tools/unity/v2.6.0/com.magicleap.unitysdk/package",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.xr.openxr": "1.13.0",
+        "com.unity.xr.arfoundation": "5.1.0",
+        "com.unity.xr.interaction.toolkit": "2.1.0",
+        "com.unity.inputsystem": "1.8.2",
+        "com.unity.modules.androidjni": "1.0.0",
+        "com.unity.xr.interactionsubsystems": "2.0.0",
+        "com.unity.collections": "2.2.1",
+        "com.unity.burst": "1.8.9"
+      }
+    },
     "com.synesthesias.plateau-unity-sdk": {
       "version": "file:C:/Users/6393126650/Downloads/PLATEAU-SDK-for-Unity-v2.3.2.tgz",
       "depth": 0,

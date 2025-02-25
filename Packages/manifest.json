@@ -3,6 +3,7 @@
     "com.cesium.unity": "file:C:/Users/6393126650/Downloads/com.cesium.unity-1.6.3.tgz",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.drumath2237.immersal-server-localizer": "https://github.com/drumath2237/Immersal-Server-Localizer.git?path=/Packages/ImmersalServerLocalizer",
+    "com.magicleap.unitysdk": "file:C:/Users/6393126650/MagicLeap/tools/unity/v2.6.0/com.magicleap.unitysdk/package",
     "com.synesthesias.plateau-unity-sdk": "file:C:/Users/6393126650/Downloads/PLATEAU-SDK-for-Unity-v2.3.2.tgz",
     "com.unity.ai.navigation": "1.1.5",
     "com.unity.burst": "1.8.9",
