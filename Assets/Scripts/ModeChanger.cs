@@ -13,6 +13,8 @@ public class ModeChanger : MonoBehaviour
     [SerializeField]
     private GameObject delayPanel;
     [SerializeField]
+    private GameObject feedbackPanel;
+    [SerializeField]
     private GameObject offset;
     [SerializeField]
     private Toggle showToggle;
@@ -22,33 +24,47 @@ public class ModeChanger : MonoBehaviour
     void Start()
     {
         delayPanel.SetActive(false);
+        feedbackPanel.SetActive(false);
     }
     
     public void ChangeMode()
     {
-        if (dropdown.value == 0)
+        // すべてのパネルを非表示にする
+        playbackPanel.SetActive(false);
+        delayPanel.SetActive(false);
+        feedbackPanel.SetActive(false);
+
+        if (dropdown.value == 0 || dropdown.value == 2)
         {
-            delayPanel.SetActive(false);
-            playbackPanel.SetActive(true);
-            if (showToggle.isOn)
+            // playback モードまたは feedback モードのとき
+            if (dropdown.value == 0)
             {
-                foreach (MeshRenderer child in offset.GetComponentsInChildren<MeshRenderer>())
+                playbackPanel.SetActive(true);
+                if (showToggle.isOn)
                 {
-                    child.enabled = true;
+                    foreach (MeshRenderer child in offset.GetComponentsInChildren<MeshRenderer>())
+                    {
+                        child.enabled = true;
+                    }
                 }
             }
+            else
+            {
+                feedbackPanel.SetActive(true);
+            }
+
             if (playToggle.isOn)
             {
                 AudioSource[] audioSources = offset.GetComponentsInChildren<AudioSource>();
-
                 foreach (AudioSource audioSource in audioSources)
                 {
                     audioSource.Play();
                 }
             }
         }
-        if (dropdown.value == 1)
+        else if (dropdown.value == 1)
         {
+            // delay モードの処理
             if (showToggle.isOn)
             {
                 foreach (MeshRenderer child in offset.GetComponentsInChildren<MeshRenderer>())
@@ -59,13 +75,11 @@ public class ModeChanger : MonoBehaviour
             if (playToggle.isOn)
             {
                 AudioSource[] audioSources = offset.GetComponentsInChildren<AudioSource>();
-
                 foreach (AudioSource audioSource in audioSources)
                 {
                     audioSource.Stop();
                 }
             }
-            playbackPanel.SetActive(false);
             delayPanel.SetActive(true);
         }
     }

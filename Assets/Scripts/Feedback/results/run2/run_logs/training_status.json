@@ -1,0 +1,29 @@
+{
+    "SliderAgent": {
+        "checkpoints": [
+            {
+                "steps": 5171,
+                "file_path": "results\\run2\\SliderAgent\\SliderAgent-5171.onnx",
+                "reward": -54.528762157146744,
+                "creation_time": 1740306496.3433094,
+                "auxillary_file_paths": [
+                    "results\\run2\\SliderAgent\\SliderAgent-5171.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5171,
+            "file_path": "results\\run2\\SliderAgent.onnx",
+            "reward": -54.528762157146744,
+            "creation_time": 1740306496.3433094,
+            "auxillary_file_paths": [
+                "results\\run2\\SliderAgent\\SliderAgent-5171.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cpu"
+    }
+}

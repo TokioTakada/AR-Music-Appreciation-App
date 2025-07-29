@@ -50,7 +50,7 @@ namespace ImmersalRESTLocalizer
 
             if (!cameraManager.TryAcquireLatestCpuImage(out var image))
             {
-                Debug.Log("cannot acquire cpu image");
+                // Debug.Log("cannot acquire cpu image");
                 return;
             }
 

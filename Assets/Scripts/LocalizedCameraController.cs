@@ -5,23 +5,22 @@ using UnityEngine.UI;
 using TMPro;
 using ImmersalRESTLocalizer.Types;
 using Cysharp.Threading.Tasks;
-using UnityEngine.XR.ARFoundation;
+using Unity.XR.CoreUtils;
 using System;
 using UniRx;
+using UnityEngine.XR.ARFoundation;
 
 namespace ImmersalRESTLocalizer
 {
     public class LocalizedCameraController : MonoBehaviour
     {
         [SerializeField] private ARCameraManager cameraManager;
-        [SerializeField] private ARSessionOrigin sessionOrigin;
+        [SerializeField] private XROrigin xrOrigin;
         [SerializeField] private ImmersalRESTConfiguration hilobbyConfiguration;
         [SerializeField] private ImmersalRESTConfiguration secondLobbyConfiguration;
         [SerializeField] private ImmersalRESTConfiguration myRoomConfiguration;
 
         private ImmersalRestClient _immersalRestClient;
-
-        //[SerializeField] private Transform arSpace;
 
         public float span = 5f;
         private float defaultSpan;
@@ -34,29 +33,18 @@ namespace ImmersalRESTLocalizer
         private Quaternion p_StartRotation;
         private IDisposable p_Trigger;
 
-        [SerializeField]
-        private float p_LerpTime = 1.0f;
+        [SerializeField] private float p_LerpTime = 1.0f;
+        [SerializeField] private GameObject successPanel;
+        [SerializeField] private GameObject failurePanel;
+        [SerializeField] private GameObject startingPanel;
+        [SerializeField] private TMP_Dropdown dropdown;
+        [SerializeField] private TextMeshProUGUI stampText;
+        [SerializeField] private TextMeshProUGUI delayText;
+        [SerializeField] private Toggle slowToggle;
 
-        [SerializeField]
-        private GameObject successPanel;
-        [SerializeField]
-        private GameObject failurePanel;
-        [SerializeField]
-        private GameObject startingPanel;
-        [SerializeField]
-        private TMP_Dropdown dropdown;
-        [SerializeField]
-        private TextMeshProUGUI stampText;
-        [SerializeField]
-        private TextMeshProUGUI delayText;
-        [SerializeField]
-        private Toggle slowToggle;
-
-        // Start is called before the first frame update
         void Start()
         {
             _immersalRestClient = new ImmersalRestClient(hilobbyConfiguration);
-            //GetIntrinsicsAsync().Forget();
             successPanel.SetActive(false);
             failurePanel.SetActive(false);
             Invoke(nameof(StartGetIntrinsics), 1.0f);
@@ -74,10 +62,11 @@ namespace ImmersalRESTLocalizer
             startingPanel.SetActive(false);
         }
 
-        void Update() {
+        void Update()
+        {
             currentTime += Time.deltaTime;
-
-            if(currentTime > span){
+            if (currentTime > span)
+            {
                 GetIntrinsics();
             }
         }
@@ -85,17 +74,11 @@ namespace ImmersalRESTLocalizer
         public void ChangeMap()
         {
             if (dropdown.value == 0)
-            {
                 _immersalRestClient = new ImmersalRestClient(hilobbyConfiguration);
-            }
-            if (dropdown.value == 1)
-            {
+            else if (dropdown.value == 1)
                 _immersalRestClient = new ImmersalRestClient(secondLobbyConfiguration);
-            }
-            if (dropdown.value == 2)
-            {
+            else if (dropdown.value == 2)
                 _immersalRestClient = new ImmersalRestClient(myRoomConfiguration);
-            }
         }
 
         public void OnClickToggle()
@@ -113,20 +96,8 @@ namespace ImmersalRESTLocalizer
 
         private async UniTask GetIntrinsicsAsync()
         {
-            /*arSpace.position = Vector3.zero;
-            arSpace.rotation = Quaternion.identity;*/
-
-            //var cameraMatrix = cameraManager.transform.localToWorldMatrix;
-
-            //StopWatchを定義
-            /*var sw = new System.Diagnostics.Stopwatch();
-            sw.Start();*/ //計測開始
-            
             if (!cameraManager.TryAcquireLatestCpuImage(out var image))
-            {
-                Debug.Log("cannot acquire cpu image");
                 return;
-            }
 
             var cameraTexture = await ARImageProcessingUtil.ConvertARCameraImageToTextureAsync(image, this.GetCancellationTokenOnDestroy());
             image.Dispose();
@@ -141,100 +112,66 @@ namespace ImmersalRESTLocalizer
             sw.Start();
             var resText = await _immersalRestClient.SendRequestAsync(intrinsics, cameraTexture);
             sw.Stop();
+
             DateTime timeStamp = DateTime.Now - sw.Elapsed;
             stampText.text = timeStamp.ToString();
             delayText.text = sw.Elapsed.ToString();
             Debug.Log("Stamp: " + timeStamp);
-            Debug.Log("Delay: " + sw.Elapsed); //経過時間
+            Debug.Log("Delay: " + sw.Elapsed);
 
             var immersalResponse = JsonUtility.FromJson<ImmersalResponseParams>(resText);
-
             var immersalCameraMatrix = immersalResponse.ToMatrix4();
-            /*var mapMatrix = cameraMatrix * immersalCameraMatrix.inverse * arSpace.localToWorldMatrix;
 
-            arSpace.position = mapMatrix.GetColumn(3);
-            arSpace.rotation = mapMatrix.rotation;
-
-            Debug.Log(intrinsics);*/
-            /*Debug.Log("coordinate: (" + immersalResponse.px + ", " + immersalResponse.py + ", " + immersalResponse.pz + ")");
-            Debug.Log("rotation matrix\n" + immersalCameraMatrix.ToString());
-            Debug.Log("rotation: " + immersalCameraMatrix.rotation.eulerAngles.ToString());
-            Debug.Log("AR Camera coordinate: " + cameraManager.transform.position.ToString());
-            Debug.Log("AR Camera rotation: " + cameraManager.transform.rotation.eulerAngles.ToString());*/
-            //Debug.Log(arSpace.position);
             immersalPosition = new Vector3(immersalResponse.px, immersalResponse.py, -immersalResponse.pz);
             if (immersalPosition != Vector3.zero)
             {
                 Debug.Log("Success");
                 failurePanel.SetActive(false);
                 successPanel.SetActive(true);
-                //p_TargetPosition = immersalPosition - cameraManager.transform.localPosition;
-                //Debug.Log("coordinate: " + p_TargetPosition.ToString());
                 Vector3 immersalEulerAngles = immersalCameraMatrix.rotation.eulerAngles;
                 Vector3 cameraEulerAngles = cameraManager.transform.localEulerAngles;
-                immersalRotation.eulerAngles = new Vector3(180 - immersalEulerAngles.x, - immersalEulerAngles.y, 90 - immersalEulerAngles.z);
+                immersalRotation.eulerAngles = new Vector3(180 - immersalEulerAngles.x, -immersalEulerAngles.y, 90 - immersalEulerAngles.z);
                 p_TargetRotation = immersalRotation * Quaternion.Inverse(cameraManager.transform.localRotation);
                 Vector3 rotatedOffset = p_TargetRotation * cameraManager.transform.localPosition;
                 p_TargetPosition = immersalPosition - rotatedOffset;
-                /*Debug.Log("coordinate: " + p_TargetPosition.ToString());
-                Debug.Log("rotation: " + p_TargetRotation.eulerAngles.ToString());*/
-                /*cameraManager.transform.localPosition = Vector3.zero;
-                cameraManager.transform.localEulerAngles = Vector3.zero;*/
-                //ExecuteMove();
-                sessionOrigin.transform.position = p_TargetPosition;
-                sessionOrigin.transform.rotation = p_TargetRotation;
-                /*Debug.Log(sw.Elapsed); //経過時間
-                sw.Stop();*/
-                Debug.Log("Target coordinate: " + immersalPosition.ToString());
-                Debug.Log("Target rotation: " + immersalRotation.eulerAngles.ToString());
-                Debug.Log("AR Camera coordinate: " + cameraManager.transform.position.ToString());
-                Debug.Log("AR Camera rotation: " + cameraManager.transform.rotation.eulerAngles.ToString());
+                xrOrigin.transform.position = p_TargetPosition;
+                xrOrigin.transform.rotation = p_TargetRotation;
             }
             else
             {
                 Debug.Log("Failure");
                 successPanel.SetActive(false);
                 failurePanel.SetActive(true);
-                /*Debug.Log(sw.Elapsed); //経過時間
-                sw.Stop();*/
             }
         }
 
         public void ExecuteMove()
         {
-            // 前回トリガーを終了する
             p_Trigger?.Dispose();
+            p_StartPosition = xrOrigin.transform.position;
+            p_StartRotation = xrOrigin.transform.rotation;
 
-            // カメラの移動開始地点を保存する
-            p_StartPosition = sessionOrigin.transform.position;
-            p_StartRotation = sessionOrigin.transform.rotation;
-
-            // 移動処理を開始する
             p_Trigger = Observable
-                .IntervalFrame(1, FrameCountType.FixedUpdate)    // 1フレーム毎に呼び出す
-                .TimeInterval()                                  // フレーム間の経過時間を取得する
-                .Select(timeInterval => timeInterval.Interval)   // TimeSpan型のデータを抽出する
-                .Scan((last, current) => last + current)         // 前回までの経過時間を加算する
-                .TakeWhile(intervalTimeSpan => (float)intervalTimeSpan.TotalSeconds < p_LerpTime) // Lerp時間を超えるまで実行する
-                .SubscribeOnMainThread()                         // メインスレッドで実行する
+                .IntervalFrame(1, FrameCountType.FixedUpdate)
+                .TimeInterval()
+                .Select(timeInterval => timeInterval.Interval)
+                .Scan((last, current) => last + current)
+                .TakeWhile(intervalTimeSpan => (float)intervalTimeSpan.TotalSeconds < p_LerpTime)
+                .SubscribeOnMainThread()
                 .Subscribe(
                 intervalTimeSpan =>
                 {
                     float totalInterval = (float)intervalTimeSpan.TotalSeconds;
-                    // Ease-in, Ease-Out の計算式で徐々に加速して徐々に減速する補間を行う
                     float t = Mathf.Min(totalInterval / p_LerpTime, 1.0f);
                     float lerpFactor = (t * t) * (3.0f - (2.0f * t));
-                    // Leap関数を使って徐々にターゲットに近づいていく
-                    sessionOrigin.transform.position = Vector3.Lerp(p_StartPosition, p_TargetPosition, lerpFactor);
-                    sessionOrigin.transform.rotation = Quaternion.Lerp(p_StartRotation, p_TargetRotation, lerpFactor);
+                    xrOrigin.transform.position = Vector3.Lerp(p_StartPosition, p_TargetPosition, lerpFactor);
+                    xrOrigin.transform.rotation = Quaternion.Lerp(p_StartRotation, p_TargetRotation, lerpFactor);
                 },
                 () =>
                 {
-                    // 最終的に指定のトランスフォームに到達させる
-                    sessionOrigin.transform.position = p_TargetPosition;
-                    sessionOrigin.transform.rotation = p_TargetRotation;
-                }
-                )
+                    xrOrigin.transform.position = p_TargetPosition;
+                    xrOrigin.transform.rotation = p_TargetRotation;
+                })
                 .AddTo(this);
         }
     }

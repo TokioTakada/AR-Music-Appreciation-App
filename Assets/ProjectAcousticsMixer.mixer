@@ -35,7 +35,13 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 6650fe0e6b18cbe4f95e2be4a5340530
+    name: Wetness Adjust
+  - guid: 109f515ee381eb3478c13f798cc5bcdf
+    name: Spatializer
+  - guid: e1c7f10f74c102f44b7b030181fc11d4
+    name: RT60 Scale
   m_AudioMixerGroupViews:
   - guids:
     - b217105dd5afef74b92907877a4fe17d
@@ -86,5 +92,8 @@ AudioMixerSnapshotController:
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 857c5293ea307664082b646c6573f6c8
   m_FloatValues:
+    6650fe0e6b18cbe4f95e2be4a5340530: 0
+    109f515ee381eb3478c13f798cc5bcdf: 0
     ceb86e5e32bdc9c4883e951d263fd674: -0.002441872
+    e1c7f10f74c102f44b7b030181fc11d4: 1
   m_TransitionOverrides: {}
